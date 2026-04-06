@@ -435,7 +435,7 @@ class MySqliInstrumentation
         }
 
         if ($mysqliObject) {
-            $tracker->storeMySqliAttributes($mysqliObject, $params[$paramsOffset + 0] ?? null, $params[$paramsOffset + 1] ?? null, $params[$paramsOffset + 3] ?? null, $params[$paramsOffset + 4] ?? null, null);
+            $tracker->storeMySqliAttributes($mysqliObject, $params[$paramsOffset + 0] ?? null, $params[$paramsOffset + 1] ?? null, $params[$paramsOffset + 3] ?? null, isset($params[$paramsOffset + 4]) ? (int) $params[$paramsOffset + 4] : null, null);
         }
 
         self::endSpan([], $exception, ($retVal === false && !$exception) ? mysqli_connect_error() : null);

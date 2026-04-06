@@ -103,6 +103,22 @@ class MySqliInstrumentationTest extends TestCase
         $this->assertDatabaseAttributesForAllSpans($offset);
     }
 
+    public function test_mysqli_connect_with_string_port(): void
+    {
+        $stringPort = '3306';
+
+        NonStrictTypesConnector::connectWithStringPort($this->mysqlHost, $this->user, $this->passwd, $this->database, $stringPort);
+        NonStrictTypesConnector::proceduralConnectWithStringPort($this->mysqlHost, $this->user, $this->passwd, $this->database, $stringPort);
+
+        $offset = 0;
+        $this->assertSame('mysqli::__construct', $this->storage->offsetGet($offset++)->getName());
+        $this->assertSame('mysqli_connect', $this->storage->offsetGet($offset++)->getName());
+
+        $this->assertCount($offset, $this->storage);
+
+        $this->assertDatabaseAttributesForAllSpans($offset);
+    }
+
     public function test_mysqli_query_objective(): void
     {
         mysqli_report(MYSQLI_REPORT_ERROR| MYSQLI_REPORT_STRICT);
